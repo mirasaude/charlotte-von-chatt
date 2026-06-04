@@ -539,12 +539,12 @@
 
 <!-- ═══════════════════ HEADER ═══════════════════ -->
 <div class="header">
-  <div class="profile-wrap" onclick="document.getElementById('fileInput').click()">
+  <label class="profile-wrap" for="fileInput" style="cursor:pointer">
     <div id="profilePlaceholder" class="profile-placeholder" style="display:none">🐶</div>
     <img id="profileImg" class="profile-img" src="./Fotos/WhatsApp Image 2026-06-02 at 15.23.21.jpeg" alt="Charlotte">
     <div class="profile-edit-hint">✏️</div>
-  </div>
-  <input type="file" id="fileInput" accept="image/*" onchange="handlePhoto(event)">
+  </label>
+  <input type="file" id="fileInput" accept="image/*" capture="environment" onchange="handlePhoto(event)" style="display:none">
   <h1>Charlotte Von Chatt 🎀</h1>
   <div class="subtitle">Charlotte Von Chatt Ribeiro Pelizon</div>
   <br>
