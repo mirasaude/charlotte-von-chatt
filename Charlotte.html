@@ -1703,29 +1703,39 @@ function toast(msg,d=2200){
 //  PHOTO
 // ════════════════════════════════════════════
 function handlePhoto(e){
-  const file=e.target.files[0];if(!file)return;
+  const file=e.target.files[0]; if(!file)return;
+
+  // 1. Mostra imediatamente via object URL (funciona em iOS PWA)
+  const objUrl=URL.createObjectURL(file);
+  applyPhoto(objUrl);
+  toast('📸 Foto atualizada!');
+
+  // 2. Comprime e salva no localStorage para persistir entre sessões
   const reader=new FileReader();
+  reader.onerror=()=>{ /* foto já está visível, ignora erro de leitura */ };
   reader.onload=ev=>{
-    // Comprime a imagem antes de salvar (máx 400px, qualidade 0.7)
-    const img=new Image();
-    img.onload=()=>{
-      const canvas=document.createElement('canvas');
-      const MAX=400;
-      let w=img.width,h=img.height;
-      if(w>h){if(w>MAX){h=Math.round(h*MAX/w);w=MAX;}}
-      else{if(h>MAX){w=Math.round(w*MAX/h);h=MAX;}}
-      canvas.width=w;canvas.height=h;
-      canvas.getContext('2d').drawImage(img,0,0,w,h);
-      const compressed=canvas.toDataURL('image/jpeg',0.7);
+    const tmpImg=new Image();
+    tmpImg.onerror=()=>{};
+    tmpImg.onload=()=>{
       try{
+        const canvas=document.createElement('canvas');
+        const MAX=500;
+        let w=tmpImg.naturalWidth||tmpImg.width;
+        let h=tmpImg.naturalHeight||tmpImg.height;
+        if(!w||!h){return;}
+        if(w>h){if(w>MAX){h=Math.round(h*MAX/w);w=MAX;}}
+        else{if(h>MAX){w=Math.round(w*MAX/h);h=MAX;}}
+        canvas.width=w; canvas.height=h;
+        const ctx=canvas.getContext('2d');
+        ctx.drawImage(tmpImg,0,0,w,h);
+        const compressed=canvas.toDataURL('image/jpeg',0.75);
         localStorage.setItem(KEYS.foto,compressed);
+        // Troca object URL pelo base64 persistente
         applyPhoto(compressed);
-        toast('📸 Foto atualizada!');
-      }catch(err){
-        toast('⚠️ Foto grande demais. Tente outra.');
-      }
+        URL.revokeObjectURL(objUrl);
+      }catch(err){}
     };
-    img.src=ev.target.result;
+    tmpImg.src=ev.target.result;
   };
   reader.readAsDataURL(file);
 }
