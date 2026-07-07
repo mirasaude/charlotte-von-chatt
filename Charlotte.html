@@ -591,6 +591,9 @@
     <button class="tab-btn" onclick="showTab('gastos')" data-tab="gastos" style="--tab-color:#6B4C8E">
       <span class="tab-icon">💰</span>Gastos
     </button>
+    <button class="tab-btn" onclick="showTab('backup')" data-tab="backup" style="--tab-color:#607D8B">
+      <span class="tab-icon">☁️</span>Backup
+    </button>
   </div>
 </div>
 
@@ -1274,6 +1277,43 @@
     </div>
   </div>
 
+  <!-- ──── BACKUP ──── -->
+  <div class="section" id="sec-backup" style="--tab-color:#607D8B">
+    <div class="section-header">
+      <span class="section-icon">☁️</span>
+      <div><div class="section-title">Backup & Transferência</div><div class="section-sub">Exporte seus dados do iPhone para o Mac (ou vice-versa)</div></div>
+    </div>
+
+    <div style="background:#fff;border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);margin-bottom:16px">
+      <div style="font-size:1rem;font-weight:700;color:var(--text);margin-bottom:8px">📤 Exportar dados</div>
+      <p style="font-size:.85rem;color:var(--light);margin-bottom:16px">Baixa um arquivo <code>.json</code> com todos os seus dados (consultas, vacinas, pesos, medicamentos, gastos…). Use para fazer backup ou transferir para outro dispositivo.</p>
+      <button class="btn btn-primary" style="--tab-color:#607D8B;width:100%" onclick="exportarDados()">📥 Baixar backup (.json)</button>
+    </div>
+
+    <div style="background:#fff;border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);margin-bottom:16px">
+      <div style="font-size:1rem;font-weight:700;color:var(--text);margin-bottom:8px">📂 Importar dados</div>
+      <p style="font-size:.85rem;color:var(--light);margin-bottom:4px">Selecione o arquivo <code>.json</code> exportado de outro dispositivo. <strong style="color:#B71C1C">Atenção: substitui todos os dados atuais.</strong></p>
+      <p style="font-size:.8rem;color:var(--light);margin-bottom:16px">💡 Dica: faça um export deste dispositivo primeiro antes de importar, por precaução.</p>
+      <label style="display:block;width:100%">
+        <input type="file" id="import-file" accept=".json" style="display:none" onchange="importarDados(this)">
+        <span class="btn btn-ghost" style="width:100%;text-align:center;cursor:pointer;display:block" onclick="document.getElementById('import-file').click()">📂 Selecionar arquivo .json</span>
+      </label>
+      <div id="import-status" style="margin-top:12px;font-size:.83rem"></div>
+    </div>
+
+    <div style="background:#FFF8E1;border-radius:var(--radius);padding:20px;border:1px solid #FFD54F">
+      <div style="font-weight:700;margin-bottom:8px">📱➡️💻 Como transferir do iPhone para o Mac</div>
+      <ol style="font-size:.84rem;color:var(--text);line-height:1.8;padding-left:20px">
+        <li>No iPhone, abra <strong>Charlotte.html</strong> e vá na aba <strong>☁️ Backup</strong></li>
+        <li>Toque em <strong>"Baixar backup (.json)"</strong> — o arquivo será salvo</li>
+        <li>Envie para o Mac via <strong>AirDrop</strong>, iCloud Drive ou e-mail</li>
+        <li>No Mac, abra o <strong>Charlotte.html</strong> e vá na aba <strong>☁️ Backup</strong></li>
+        <li>Clique em <strong>"Selecionar arquivo .json"</strong> e escolha o arquivo recebido</li>
+        <li>Pronto! Todos os dados do iPhone estarão no Mac 🎉</li>
+      </ol>
+    </div>
+  </div>
+
 </div><!-- /content -->
 
 <!-- ═══════════════ MODALS ═══════════════ -->
@@ -1325,6 +1365,12 @@
   <div class="modal">
     <div class="modal-header"><span class="modal-title">🏥 Consulta Veterinária</span><button class="modal-close" onclick="closeModal('consulta')">✕</button></div>
     <div class="modal-body">
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">
+        <span style="font-size:.72rem;color:var(--light);align-self:center">Preencher com:</span>
+        <button class="btn btn-ghost btn-sm" onclick="prefillConsulta('elaine')" style="font-size:.72rem">👁️ Elaine Santos</button>
+        <button class="btn btn-ghost btn-sm" onclick="prefillConsulta('adriana')" style="font-size:.72rem">🏥 Adriana Stehling</button>
+        <button class="btn btn-ghost btn-sm" onclick="prefillConsulta('sabrina')" style="font-size:.72rem">🦷 Sabrina Feitosa</button>
+      </div>
       <div class="form-row">
         <div class="form-group"><label>Data *</label><input id="c-data" type="date"></div>
         <div class="form-group"><label>Retorno</label><input id="c-retorno" type="date"></div>
@@ -1688,6 +1734,53 @@ const KEYS = {
 };
 
 function load(k){try{return JSON.parse(localStorage.getItem(KEYS[k]))||[]}catch{return []}}
+
+// ════════════════════════════════════════════
+//  BACKUP: EXPORT / IMPORT
+// ════════════════════════════════════════════
+function exportarDados(){
+  var backup={_versao:'charlotte-v1',_data:new Date().toISOString(),_device:navigator.userAgent.substring(0,80)};
+  Object.keys(KEYS).forEach(function(k){backup[k]=load(k);});
+  // Incluir também foto e versões de init
+  backup._foto=localStorage.getItem(KEYS.foto)||'';
+  var json=JSON.stringify(backup,null,2);
+  var blob=new Blob([json],{type:'application/json'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  var now=new Date();
+  var ds=now.getFullYear()+'-'+(now.getMonth()+1).toString().padStart(2,'0')+'-'+now.getDate().toString().padStart(2,'0');
+  a.href=url;a.download='charlotte-backup-'+ds+'.json';
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  toast('📥 Backup exportado com sucesso!');
+}
+function importarDados(input){
+  var file=input.files[0];if(!file)return;
+  var status=document.getElementById('import-status');
+  status.innerHTML='<span style="color:#888">Lendo arquivo…</span>';
+  var reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      var data=JSON.parse(e.target.result);
+      if(!data._versao||!data._versao.startsWith('charlotte')){
+        status.innerHTML='<span style="color:#B71C1C">❌ Arquivo inválido — não é um backup da Charlotte.</span>';return;
+      }
+      if(!confirm('Substituir TODOS os dados atuais pelos dados do arquivo? Esta ação não pode ser desfeita.')){
+        status.innerHTML='<span style="color:#888">Importação cancelada.</span>';return;
+      }
+      Object.keys(KEYS).forEach(function(k){
+        if(data[k]!==undefined)localStorage.setItem(KEYS[k],JSON.stringify(data[k]));
+      });
+      if(data._foto)localStorage.setItem(KEYS.foto,data._foto);
+      // Preservar flags de init para não sobrescrever
+      status.innerHTML='<span style="color:#2E7D32">✅ Dados importados com sucesso! Recarregando…</span>';
+      setTimeout(function(){location.reload();},1200);
+    }catch(err){
+      status.innerHTML='<span style="color:#B71C1C">❌ Erro ao ler arquivo: '+err.message+'</span>';
+    }
+  };
+  reader.readAsText(file);
+}
 function loadObj(k){try{return JSON.parse(localStorage.getItem(KEYS[k]))||{}}catch{return {}}}
 function save(k,v){localStorage.setItem(KEYS[k],JSON.stringify(v));}
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
@@ -1828,6 +1921,18 @@ function renderVermifugos(){
 // ════════════════════════════════════════════
 //  CONSULTAS
 // ════════════════════════════════════════════
+function prefillConsulta(who){
+  const vets={
+    elaine:{vet:'Dra. Elaine Santos',clinica:'Elaine Santos Oftalmologia Veterinária — Niterói',motivo:'Consulta Oftalmológica — Elaine Santos'},
+    adriana:{vet:'Dra. Adriana Stehling',clinica:'Clínica Veterinária Adriana Stehling — Niterói',motivo:'Consulta Clínica — Adriana Stehling'},
+    sabrina:{vet:'Dra. Sabrina Feitosa',clinica:'Odontologia Veterinária — Sabrina Feitosa',motivo:'Consulta Odontológica — Sabrina Feitosa'},
+  };
+  const v=vets[who];if(!v)return;
+  document.getElementById('c-vet').value=v.vet;
+  document.getElementById('c-clinica').value=v.clinica;
+  if(!document.getElementById('c-motivo').value)document.getElementById('c-motivo').value=v.motivo;
+  if(!document.getElementById('c-data').value)document.getElementById('c-data').value=today();
+}
 function saveConsulta(){
   const motivo=document.getElementById('c-motivo').value.trim();
   const data=document.getElementById('c-data').value;
@@ -3461,6 +3566,54 @@ function calcAge(){
     });
     save('gastos',gArr14);
     localStorage.setItem('ch_v14_init','1');
+  }
+
+  // ── V15: Consulta Oftalmológica 02/07/2026 + Peso + Medicamentos atualizados ──
+  if(!localStorage.getItem('ch_v15_init')){
+    // Nova consulta
+    var cArr15=load('consultas');
+    cArr15.unshift({
+      id:uid(),
+      data:'2026-07-02',
+      motivo:'Consulta Oftalmológica — Elaine Santos (retorno)',
+      vet:'Dra. Elaine Santos',
+      clinica:'Elaine Santos Oftalmologia Veterinária — Niterói',
+      obs:'USO OFTÁLMICO: 1) Nevanac colírio OD 1x/dia · 2) Azopt OU Dorzolamida 2% colírio OD 12/12h · 3) Optivet Tears 1 gota cada olho 2x/dia (manhã/noite), uso contínuo · 4) Tacrolimus 0,03% colírio OU pomada oftálmica cada olho 2x/dia, uso contínuo. USO INTERNO: Lacri Caps Pet 1 cápsula oral 1x/dia, uso contínuo. ORIENTAÇÕES: intervalo mín. 5min entre medicações oculares. Revisar em 21 a 28 dias.',
+      retorno:'2026-07-23'
+    });
+    save('consultas',cArr15);
+
+    // Novo peso
+    var pArr15=load('pesos');
+    var jaTemPeso15=pArr15.some(function(p){return p.data==='2026-07-02';});
+    if(!jaTemPeso15){
+      pArr15.push({id:uid(),data:'2026-07-02',peso:13.2,obs:'Elaine Santos Oftalmologia'});
+      pArr15.sort(function(a,b){return a.data.localeCompare(b.data);});
+      save('pesos',pArr15);
+    }
+
+    // Medicamentos — atualizar Nevanac e Tacrolimus, adicionar Azopt/Dorzolamida
+    var mArr15=load('meds');
+    // Encerrar versões antigas de Nevanac e Tacrolimus (antes de 02/07/2026)
+    mArr15.forEach(function(m){
+      if((m.nome&&(m.nome.toLowerCase().includes('nevanac')||m.nome.toLowerCase().includes('tacrolimus')))&&!m.fim){
+        m.fim='2026-07-01';
+      }
+    });
+    // Nevanac novo: 1x/dia OD
+    mArr15.unshift({id:uid(),nome:'Nevanac colírio (OD)',dose:'1 gota olho direito 1x/dia',inicio:'2026-07-02',fim:'',obs:'Uso humano — oftalmológico. Até novas recomendações. Intervalo mín. 5min entre colírios.',categoria:'oftalmologico'});
+    // Azopt/Dorzolamida — NOVO
+    mArr15.unshift({id:uid(),nome:'Azopt ou Dorzolamida 2% colírio (OD)',dose:'1 gota olho direito 12/12h',inicio:'2026-07-02',fim:'',obs:'Uso humano — oftalmológico. Até novas recomendações.',categoria:'oftalmologico'});
+    // Tacrolimus novo: cada olho 2x/dia
+    mArr15.unshift({id:uid(),nome:'Tacrolimus 0,03% colírio/pomada',dose:'1 gota OU fina camada cada olho 2x/dia',inicio:'2026-07-02',fim:'',obs:'Uso veterinário (manipulação). Uso contínuo até novas recomendações.',categoria:'oftalmologico'});
+    save('meds',mArr15);
+
+    // Lembrete retorno oftalmológico
+    var lArr15=load('lembretes');
+    lArr15.push({id:uid(),texto:'👁️ Retorno Elaine Santos — agendar entre 23/07 e 30/07/2026 (21–28 dias)',data:'2026-07-16',prioridade:'alta',feito:false});
+    save('lembretes',lArr15);
+
+    localStorage.setItem('ch_v15_init','1');
   }
 
   renderVacinas();renderVermifugos();renderConsultas();renderAnotacoes();
