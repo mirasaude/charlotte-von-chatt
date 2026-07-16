@@ -1295,11 +1295,11 @@
       <div style="font-size:1rem;font-weight:700;color:var(--text);margin-bottom:8px">📂 Importar dados</div>
       <p style="font-size:.85rem;color:var(--light);margin-bottom:4px">Selecione o arquivo <code>.json</code> exportado de outro dispositivo. <strong style="color:#B71C1C">Atenção: substitui todos os dados atuais.</strong></p>
       <p style="font-size:.8rem;color:var(--light);margin-bottom:16px">💡 Dica: faça um export deste dispositivo primeiro antes de importar, por precaução.</p>
-      <label style="display:block;width:100%">
-        <input type="file" id="import-file" accept=".json" style="display:none" onchange="importarDados(this)">
-        <span class="btn btn-ghost" style="width:100%;text-align:center;cursor:pointer;display:block" onclick="document.getElementById('import-file').click()">📂 Selecionar arquivo .json</span>
+      <label style="display:block;width:100%;cursor:pointer">
+        <input type="file" id="import-file" accept=".json" onchange="importarDados(this)" style="position:absolute;opacity:0;width:1px;height:1px;overflow:hidden">
+        <div class="btn btn-ghost" style="width:100%;text-align:center;pointer-events:none">📂 Selecionar arquivo .json</div>
       </label>
-      <div id="import-status" style="margin-top:12px;font-size:.83rem"></div>
+      <div id="import-status" style="margin-top:12px;font-size:.9rem;min-height:20px"></div>
     </div>
 
     <div style="background:#FFF8E1;border-radius:var(--radius);padding:20px;border:1px solid #FFD54F">
@@ -1819,30 +1819,24 @@ function exportarDados(){
 function importarDados(input){
   var file=input.files[0];if(!file)return;
   var status=document.getElementById('import-status');
-  status.innerHTML='<span style="color:#888">Lendo arquivo…</span>';
+  status.innerHTML='<span style="color:#888">⏳ Lendo arquivo…</span>';
+  status.scrollIntoView({behavior:'smooth',block:'center'});
   var reader=new FileReader();
   reader.onload=function(e){
     try{
       var data=JSON.parse(e.target.result);
       if(!data._versao||!data._versao.startsWith('charlotte')){
-        status.innerHTML='<span style="color:#B71C1C">❌ Arquivo inválido — não é um backup da Charlotte.</span>';return;
+        status.innerHTML='<div style="background:#FFEBEE;border-radius:10px;padding:12px;color:#B71C1C">❌ Arquivo inválido — não é um backup da Charlotte.</div>';return;
       }
-      // Mostrar botão de confirmação em vez de confirm() (bloqueado no iOS Safari)
-      status.innerHTML='<div style="background:#FFF3CD;border:1px solid #FFC107;border-radius:10px;padding:12px;margin-top:8px">'
-        +'<b>⚠️ Confirmar importação?</b><br><small>Isso vai substituir todos os dados atuais pelos dados do arquivo.</small><br><br>'
-        +'<button onclick="window._doImport()" style="background:#2E7D32;color:#fff;border:none;border-radius:8px;padding:10px 20px;font-size:1rem;margin-right:8px">✅ Sim, importar</button>'
-        +'<button onclick="document.getElementById(\'import-status\').innerHTML=\'<span style=color:#888>Cancelado.</span>\'" style="background:#888;color:#fff;border:none;border-radius:8px;padding:10px 16px;font-size:1rem">Cancelar</button>'
-        +'</div>';
-      window._doImport=function(){
-        Object.keys(KEYS).forEach(function(k){
-          if(data[k]!==undefined)localStorage.setItem(KEYS[k],JSON.stringify(data[k]));
-        });
-        if(data._foto)localStorage.setItem(KEYS.foto,data._foto);
-        status.innerHTML='<span style="color:#2E7D32;font-size:1.1rem">✅ Dados importados! Recarregando…</span>';
-        setTimeout(function(){location.reload();},1500);
-      };
+      Object.keys(KEYS).forEach(function(k){
+        if(data[k]!==undefined)localStorage.setItem(KEYS[k],JSON.stringify(data[k]));
+      });
+      if(data._foto)localStorage.setItem(KEYS.foto,data._foto);
+      status.innerHTML='<div style="background:#E8F5E9;border-radius:10px;padding:16px;color:#1B5E20;font-size:1rem"><b>✅ Dados importados com sucesso!</b><br>Recarregando em 2 segundos…</div>';
+      status.scrollIntoView({behavior:'smooth',block:'center'});
+      setTimeout(function(){location.reload();},2000);
     }catch(err){
-      status.innerHTML='<span style="color:#B71C1C">❌ Erro ao ler arquivo: '+err.message+'</span>';
+      status.innerHTML='<div style="background:#FFEBEE;border-radius:10px;padding:12px;color:#B71C1C">❌ Erro: '+err.message+'</div>';
     }
   };
   reader.readAsText(file);
