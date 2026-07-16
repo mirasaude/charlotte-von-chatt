@@ -959,7 +959,7 @@
         <div class="cond-chip red" style="grid-column:1/-1"><span class="ci">👁️</span><div><div class="cl">Catarata OD — Reabsortiva</div><div class="cs">Catarata hipermadura com liquefação lenticular. ERG ✅ (retina normal). Cirurgia indicada — Dra. Fernanda Jannuzzi. Aguardando recuperação pós-odonto.</div></div></div>
         <div class="cond-chip yellow"><span class="ci">🫀</span><div><div class="cl">DMVM — Estágio B1</div><div class="cs">Doença valvar mitral discreta · sem repercussão hemodinâmica · grad. mitral aumentou 23→83 mmHg · reavaliação anual (mai/2027)</div></div></div>
         <div class="cond-chip yellow"><span class="ci">🫁</span><div><div class="cl">Broncopatia</div><div class="cs">Infiltrado peribronquial moderado com broncograma aéreo · detectado jun/2024 · não reavaliado</div></div></div>
-        <div class="cond-chip red"><span class="ci">🫘</span><div><div class="cl">Cistite + Microcristais</div><div class="cs">Microlitíase vesical 0,26cm + múltiplos microcristais (USO jan/2025) · por isso o Cistimicin!</div></div></div>
+        <div class="cond-chip red"><span class="ci">🫘</span><div><div class="cl">Cistite + ITU Bacteriana</div><div class="cs">USO jan/2025: microcristais + microlitíase 0,26cm. EAS jul/2026: ITU ativa — urina turva, nitrito ⊕, leucocitúria, flora intensa, estruvita numerosos ⚠️ Aguardando conduta Dra. Vera.</div></div></div>
         <div class="cond-chip yellow"><span class="ci">🩸</span><div><div class="cl">Dislipidemia</div><div class="cs">Triglicerídeos 154 mg/dL ↑ (ref 20–112) · Colesterol VLDL ↑ · jun/2024 · não reavaliado</div></div></div>
       </div>
       <div class="charts-grid">
@@ -2715,6 +2715,26 @@ function renderExameCharts(){
 //  EXAMES — dados estáticos completos
 // ════════════════════════════════════════════
 const EXAMES=[
+  {id:'eas_2026',data:'2026-07-16',tipo:'EAS — Urina Tipo 1',cat:'lab',
+   icone:'🧪',ec:'#C4704A',ebg:'#FCE8E0',status:'atencao',
+   medico:'Dra. Vera Lucia Vaz Guimarães (CRMV 2920)',clinica:'PCA Centro de Diagnóstico Veterinário — Niterói',
+   resumo:'⚠️ ITU bacteriana: urina turva, nitrito positivo, leucocitúria, flora intensa e cristais de estruvita numerosos. Requer avaliação urgente.',
+   conclusao:'Resultado com múltiplos achados alterados sugestivos de infecção do trato urinário (ITU) bacteriana. Urina turva (ref: límpida), nitrito positivo (presença bacteriana), leucócitos 10–15/campo (ref: ≤6), flora bacteriana intensa e cristais de estruvita numerosos (associados a pH alcalino e ITU). Proteína +(30) provavelmente secundária à inflamação. Células vesicais (+) indicam irritação da mucosa. Coleta por cateterização (15/07). ⚠️ Contato urgente com Dra. Vera para antibioticoterapia direcionada.',
+   valores:[
+     {n:'Aspecto',v:'Turvo ⬆️',ref:'Límpido',ok:false},
+     {n:'Densidade',v:'1035',ref:'1.025–1.045',ok:true},
+     {n:'pH',v:'6,5',ref:'6,0–7,0',ok:true},
+     {n:'Proteína',v:'+(30) ⬆️',ref:'Negativo',ok:false},
+     {n:'Nitrito',v:'Positivo ⬆️',ref:'Negativo',ok:false},
+     {n:'Leucócitos',v:'10–15/campo ⬆️',ref:'≤6/campo',ok:false},
+     {n:'Eritrócitos',v:'Ausentes ✅',ref:'≤4/campo',ok:true},
+     {n:'Bactérias',v:'Flora Intensa ⬆️',ref:'Ausentes',ok:false},
+     {n:'Cristais',v:'Estruvita Numerosos ⬆️',ref:'Raros',ok:false},
+     {n:'Células Vesicais',v:'(+) ⬆️',ref:'Raras',ok:false},
+     {n:'Cilindros',v:'Ausentes ✅',ref:'Ausentes',ok:true},
+     {n:'Bilirrubina',v:'Negativo ✅',ref:'Negativo',ok:true},
+   ],
+   pdf:'',imgs:[]},
   {id:'eco_2026',data:'2026-05-30',tipo:'Ecocardiograma + ECG',cat:'cardio',
    icone:'🫀',ec:'#C4704A',ebg:'#FCE8E0',status:'alerta',
    medico:'Dr. Luiz Sales Paula (CRMV 14998)',clinica:'PCA — Req. Adriana Stehling',
@@ -3828,27 +3848,6 @@ function calcAge(){
     }
     save('meds',mArr16);
     localStorage.setItem('ch_v16_init','1');
-  }
-
-  // v17 — EAS 16/07/2026 (PCA Diagnósticos Veterinários)
-  if(!localStorage.getItem('ch_v17_init')){
-    var exArr17=load('examesExtra');
-    var easId=uid();
-    exArr17.unshift({
-      id:easId,
-      tipo:'lab',
-      nome:'EAS — Exame de Urina Tipo 1',
-      data:'2026-07-16',
-      dataColeta:'2026-07-15',
-      vet:'Dra. Vera Lucia Vaz Guimarães (CRMV 2920)',
-      local:'PCA Centro de Diagnóstico Veterinário — Niterói',
-      requisicao:'330.751',
-      resultado:'Cor: Amarelo | Aspecto: TURVO (ref: Límpido) ⚠️ | Densidade: 1035 (ref: 1.025-1.045) | pH: 6,5 (normal)\n\nQuímico: Proteína +(30) ⚠️ | Nitrito: Positivo ⚠️ | Bilirrubina/Cetônicos/Glicose/Sangue: Negativos\n\nSedimentoscopia: Leucócitos 10-15/campo ⚠️ (ref: 6/campo) | Eritrócitos: Ausentes | Bactérias: Flora Intensa ⚠️ | Cristais: Estruvita (Numerosos) ⚠️ | Células Vesicais: (+) ⚠️ | Cilindros: Ausentes',
-      conclusao:'⚠️ ATENÇÃO: Resultado alterado. Achados sugestivos de infecção urinária bacteriana (ITU): aspecto turvo, nitrito positivo, leucocitúria (10-15/campo), flora bacteriana intensa e cristais de estruvita numerosos. Proteína +(30) pode ser secundária à inflamação. Necessário contato com Dra. Vera para avaliação e possível antibioticoterapia. Coleta por cateterização.',
-      obs:'Responsável técnico: Frederico A. G. C. Weber CRMV 4679. Coleta por cateterização em 15/07/2026.'
-    });
-    save('examesExtra',exArr17);
-    localStorage.setItem('ch_v17_init','1');
   }
 
   renderVacinas();renderVermifugos();renderConsultas();renderAnotacoes();
