@@ -582,8 +582,8 @@
     <button class="tab-btn" onclick="showTab('exames')" data-tab="exames" style="--tab-color:#8B4513">
       <span class="tab-icon">🔬</span>Exames
     </button>
-    <button class="tab-btn" onclick="showTab('estoque')" data-tab="estoque" style="--tab-color:#52796F">
-      <span class="tab-icon">📦</span>Estoque
+    <button class="tab-btn" onclick="showTab('receitas')" data-tab="receitas" style="--tab-color:#C4704A">
+      <span class="tab-icon">📋</span>Receitas
     </button>
     <button class="tab-btn" onclick="showTab('contatos')" data-tab="contatos" style="--tab-color:#A0522D">
       <span class="tab-icon">📞</span>Contatos
@@ -1122,28 +1122,29 @@
     </div>
 
     <div class="exam-timeline" id="exam-timeline"></div>
+
+    <!-- Exames adicionados manualmente -->
+    <div class="card" style="margin-top:16px">
+      <div class="card-header">
+        <div class="card-title"><span class="dot" style="background:#8B4513"></span>➕ Novos Exames</div>
+        <button class="btn btn-primary btn-sm" onclick="openModal('exame')" style="--tab-color:#8B4513">+ Adicionar</button>
+      </div>
+      <div id="exames-extra-list"><div class="empty-state"><div class="empty-icon">🔬</div><p>Adicione novos exames aqui. As conclusões do painel acima são históricas e fixas — novos resultados ficam nesta lista.</p></div></div>
+    </div>
   </div>
 
-
-  <!-- ──── ESTOQUE ──── -->
-  <div class="section" id="sec-estoque" style="--tab-color:#52796F">
-    <div class="stats-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:10px">
-      <div class="stat-card" style="--c1:#52796F;--c2:#84A98C"><span class="stat-icon">📦</span><span class="stat-val" id="est-total">0</span><span class="stat-label">Itens em estoque</span></div>
-      <div class="stat-card" style="--c1:#C4704A;--c2:#C4874A"><span class="stat-icon">⚠️</span><span class="stat-val" id="est-alerta">0</span><span class="stat-label">Com alerta</span></div>
-      <div class="stat-card" style="--c1:#5A7EA8;--c2:#9B7DC4"><span class="stat-icon">📅</span><span class="stat-val" id="est-vencendo">0</span><span class="stat-label">Vencem em 30d</span></div>
-    </div>
-    <div class="est-filter-bar">
-      <button class="btn btn-primary btn-sm" onclick="filterEstoque('todos')" id="estf-todos" style="--tab-color:#52796F">Todos</button>
-      <button class="btn btn-ghost btn-sm" onclick="filterEstoque('med')" id="estf-med">💊 Remédios</button>
-      <button class="btn btn-ghost btn-sm" onclick="filterEstoque('suplemento')" id="estf-suplemento">🌿 Suplementos</button>
-      <button class="btn btn-ghost btn-sm" onclick="filterEstoque('higiene')" id="estf-higiene">🛁 Tópicos</button>
+  <!-- ──── RECEITAS ──── -->
+  <div class="section" id="sec-receitas" style="--tab-color:#C4704A">
+    <div class="section-header">
+      <span class="section-icon">📋</span>
+      <div><div class="section-title">Receitas Médicas</div><div class="section-sub">Cadastre a receita → os remédios vão direto para Medicamentos</div></div>
     </div>
     <div class="card">
       <div class="card-header">
-        <div class="card-title"><span class="dot" style="background:#52796F"></span>📦 Estoque de Medicamentos</div>
-        <button class="btn btn-primary btn-sm" onclick="openModal('estoque')" style="--tab-color:#52796F">+ Adicionar</button>
+        <div class="card-title"><span class="dot" style="background:#C4704A"></span>📋 Histórico de Receitas</div>
+        <button class="btn btn-primary btn-sm" onclick="openModal('receita')" style="--tab-color:#C4704A">+ Nova Receita</button>
       </div>
-      <div id="estoque-list"><div class="empty-state"><div class="empty-icon">📦</div><p>Nenhum item em estoque.</p></div></div>
+      <div id="receitas-list"><div class="empty-state"><div class="empty-icon">📋</div><p>Nenhuma receita cadastrada. Adicione a receita e os remédios entram automaticamente!</p></div></div>
     </div>
   </div>
 
@@ -1190,6 +1191,15 @@
         </div>
         <a class="btn btn-primary btn-sm" href="tel:+5521965226670" style="--tab-color:#C4704A;text-decoration:none">📞 Ligar</a>
       </div>
+      <div class="contact-card">
+        <div class="contact-avatar" style="background:linear-gradient(135deg,#9B7DC4,#5A7EA8)">👁️</div>
+        <div class="contact-body">
+          <div class="contact-name">Elaine Santos Oftalmologia</div>
+          <div class="contact-role">Oftalmologia Veterinária — Niterói · Dra. Elaine (CRMV 9278) e Dra. Juliana (CRMV 13602)</div>
+          <a class="contact-phone" href="tel:+552134928292">(21) 3492-8292 / (21) 99276-5340</a>
+        </div>
+        <a class="btn btn-primary btn-sm" href="tel:+552134928292" style="--tab-color:#9B7DC4;text-decoration:none">📞 Ligar</a>
+      </div>
     </div>
 
     <!-- Serviços -->
@@ -1205,15 +1215,6 @@
           <a class="contact-phone" href="tel:+5521981719810">(21) 98171-9810</a>
         </div>
         <a class="btn btn-primary btn-sm" href="tel:+5521981719810" style="--tab-color:#6B9E7A;color:#006651;text-decoration:none">📞 Ligar</a>
-      </div>
-      <div class="contact-card">
-        <div class="contact-avatar" style="background:linear-gradient(135deg,#9B7DC4,#5A7EA8)">👁️</div>
-        <div class="contact-body">
-          <div class="contact-name">Elaine Santos Oftalmologia</div>
-          <div class="contact-role">Oftalmologia Veterinária — Niterói · Dra. Elaine (CRMV 9278) e Dra. Juliana (CRMV 13602)</div>
-          <a class="contact-phone" href="tel:+552134928292">(21) 3492-8292 / (21) 99276-5340</a>
-        </div>
-        <a class="btn btn-primary btn-sm" href="tel:+552134928292" style="--tab-color:#9B7DC4;text-decoration:none">📞 Ligar</a>
       </div>
       <div class="contact-card">
         <div class="contact-avatar" style="background:linear-gradient(135deg,#C4704A,#9B7DC4)">🛁</div>
@@ -1611,7 +1612,8 @@
 <!-- Contato Extra -->
 <div class="modal-overlay" id="modal-contato">
   <div class="modal">
-    <div class="modal-header"><span class="modal-title">📋 Novo Contato</span><button class="modal-close" onclick="closeModal('contato')">✕</button></div>
+    <div class="modal-header"><span class="modal-title" id="ct-modal-title">📋 Novo Contato</span><button class="modal-close" onclick="closeModal('contato')">✕</button></div>
+    <input type="hidden" id="ct-edit-id">
     <div class="modal-body">
       <div class="form-group"><label>Nome *</label><input id="ct-nome" placeholder="Nome do contato" type="text"></div>
       <div class="form-group"><label>Função / Especialidade</label><input id="ct-role" placeholder="Ex: Fisioterapeuta, Pet Sitter..." type="text"></div>
@@ -1621,6 +1623,66 @@
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeModal('contato')">Cancelar</button>
       <button class="btn btn-primary" style="--tab-color:#A0522D" onclick="saveContato()">💾 Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Receita -->
+<div class="modal-overlay" id="modal-receita">
+  <div class="modal" style="max-width:520px">
+    <div class="modal-header"><span class="modal-title">📋 Nova Receita</span><button class="modal-close" onclick="closeModal('receita')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group"><label>Data *</label><input id="rc-data" type="date"></div>
+        <div class="form-group"><label>Veterinária *</label><input id="rc-vet" placeholder="Nome da vet" type="text"></div>
+      </div>
+      <div class="form-group"><label>Clínica</label><input id="rc-clinica" placeholder="Nome da clínica" type="text"></div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px">
+        <span style="font-size:.72rem;color:var(--light);align-self:center">Preencher com:</span>
+        <button class="btn btn-ghost btn-sm" onclick="prefillReceita('elaine')" style="font-size:.72rem">👁️ Elaine Santos</button>
+        <button class="btn btn-ghost btn-sm" onclick="prefillReceita('adriana')" style="font-size:.72rem">🏥 Adriana</button>
+        <button class="btn btn-ghost btn-sm" onclick="prefillReceita('sabrina')" style="font-size:.72rem">🦷 Sabrina</button>
+      </div>
+      <div class="form-group"><label>Diagnóstico / Observações gerais</label><textarea id="rc-obs" placeholder="Ex: Glaucoma OD, retorno em 21 dias..."></textarea></div>
+      <div style="margin-top:12px">
+        <div style="font-weight:600;font-size:.88rem;margin-bottom:8px;color:var(--text)">💊 Medicamentos da receita</div>
+        <div id="rc-meds-list" style="display:flex;flex-direction:column;gap:8px"></div>
+        <button class="btn btn-ghost btn-sm" style="margin-top:8px;width:100%" onclick="addMedRow()">+ Adicionar medicamento</button>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('receita')">Cancelar</button>
+      <button class="btn btn-primary" style="--tab-color:#C4704A" onclick="saveReceita()">💾 Salvar receita + criar remédios</button>
+    </div>
+  </div>
+</div>
+
+<!-- Exame novo -->
+<div class="modal-overlay" id="modal-exame">
+  <div class="modal">
+    <div class="modal-header"><span class="modal-title">🔬 Novo Exame</span><button class="modal-close" onclick="closeModal('exame')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group"><label>Data *</label><input id="ex-data" type="date"></div>
+        <div class="form-group"><label>Tipo</label>
+          <select id="ex-tipo">
+            <option value="lab">🧪 Laboratorial</option>
+            <option value="imagem">🖥️ Imagem (USO/ECO/Rx)</option>
+            <option value="cardio">🫀 Cardio/ECG</option>
+            <option value="oftalmo">👁️ Oftalmológico</option>
+            <option value="fezes">🔬 Fezes/Urina</option>
+            <option value="outro">📄 Outro</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group"><label>Nome do Exame *</label><input id="ex-nome" placeholder="Ex: Hemograma, ECO abdominal, ERG..." type="text"></div>
+      <div class="form-group"><label>Solicitado por</label><input id="ex-vet" placeholder="Nome da veterinária" type="text"></div>
+      <div class="form-group"><label>Resultado / Conclusão</label><textarea id="ex-resultado" placeholder="Descreva o resultado ou conclusão do laudo..."></textarea></div>
+      <div class="form-group"><label>Arquivo (nome do PDF, se tiver)</label><input id="ex-arquivo" placeholder="Ex: Exames/Laboratoriais/2026-07-Hemograma.pdf" type="text"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('exame')">Cancelar</button>
+      <button class="btn btn-primary" style="--tab-color:#8B4513" onclick="saveExameExtra()">💾 Salvar</button>
     </div>
   </div>
 </div>
@@ -1730,7 +1792,7 @@ const KEYS = {
   banhos:'ch_banhos', meds:'ch_meds', lembretes:'ch_lembretes',
   diario:'ch_diario', foto:'ch_foto',
   contatosExtra:'ch_contatos_extra', gastos:'ch_gastos',
-  estoque:'ch_estoque'
+  estoque:'ch_estoque', receitas:'ch_receitas', examesExtra:'ch_exames_extra'
 };
 
 function load(k){try{return JSON.parse(localStorage.getItem(KEYS[k]))||[]}catch{return []}}
@@ -1854,6 +1916,7 @@ function showTab(id){
   if(id==='gastos'){renderGastos();setTimeout(()=>renderGastosCharts(),60);}
   if(id==='exames'){renderExames();setTimeout(renderExameCharts,80);}
   if(id==='estoque'){renderEstoque();}
+  if(id==='receitas'){renderReceitas();}
 }
 
 // ════════════════════════════════════════════
@@ -1861,7 +1924,7 @@ function showTab(id){
 // ════════════════════════════════════════════
 function openModal(name){
   // pre-fill dates
-  const dateInputs={'vacina':'v-data','vermifugo':'vm-data','consulta':'c-data','peso':'p-data','banho':'b-data','lembrete':'l-data','diario':'d-data'};
+  const dateInputs={'vacina':'v-data','vermifugo':'vm-data','consulta':'c-data','peso':'p-data','banho':'b-data','lembrete':'l-data','diario':'d-data','receita':'rc-data','exame':'ex-data'};
   if(dateInputs[name])document.getElementById(dateInputs[name]).value=today();
   document.getElementById('modal-'+name).classList.add('open');
 }
@@ -2234,28 +2297,163 @@ function escapeHtml(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').repla
 function saveContato(){
   const nome=document.getElementById('ct-nome').value.trim();
   if(!nome){toast('⚠️ Informe o nome!');return;}
+  const editId=document.getElementById('ct-edit-id').value;
   const arr=load('contatosExtra');
-  arr.unshift({id:uid(),nome,role:document.getElementById('ct-role').value,tel:document.getElementById('ct-tel').value,obs:document.getElementById('ct-obs').value});
+  const obj={id:editId||uid(),nome,role:document.getElementById('ct-role').value,tel:document.getElementById('ct-tel').value,obs:document.getElementById('ct-obs').value};
+  if(editId){const i=arr.findIndex(v=>v.id===editId);if(i>-1)arr[i]=obj;else arr.unshift(obj);}
+  else arr.unshift(obj);
   save('contatosExtra',arr);renderContatosExtra();closeModal('contato');toast('📋 Contato salvo!');
-  ['ct-nome','ct-role','ct-tel','ct-obs'].forEach(id=>document.getElementById(id).value='');
+  ['ct-nome','ct-role','ct-tel','ct-obs','ct-edit-id'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('ct-modal-title').textContent='📋 Novo Contato';
+}
+function editContato(id){
+  const v=load('contatosExtra').find(x=>x.id===id);if(!v)return;
+  document.getElementById('ct-edit-id').value=id;
+  document.getElementById('ct-nome').value=v.nome||'';
+  document.getElementById('ct-role').value=v.role||'';
+  document.getElementById('ct-tel').value=v.tel||'';
+  document.getElementById('ct-obs').value=v.obs||'';
+  document.getElementById('ct-modal-title').textContent='✏️ Editar Contato';
+  openModal('contato');
 }
 function delContato(id){if(!confirm('Remover?'))return;save('contatosExtra',load('contatosExtra').filter(v=>v.id!==id));renderContatosExtra();toast('🗑️ Removido');}
 function renderContatosExtra(){
   const arr=load('contatosExtra');const el=document.getElementById('contatos-extra-list');
   if(!arr.length){el.innerHTML='<div class="empty-state"><div class="empty-icon">📋</div><p>Adicione outros contatos úteis.</p></div>';return;}
-  el.innerHTML=arr.map(v=>`<div class="contact-card">
-    <div class="contact-avatar" style="background:linear-gradient(135deg,#C4874A,#A0522D)">📋</div>
-    <div class="contact-body">
-      <div class="contact-name">${v.nome}</div>
-      ${v.role?`<div class="contact-role">${v.role}</div>`:''}
-      ${v.tel?`<a class="contact-phone" href="tel:${v.tel.replace(/\D/g,'')}">${v.tel}</a>`:''}
-      ${v.obs?`<div style="font-size:.75rem;color:var(--light);margin-top:2px">${v.obs}</div>`:''}
-    </div>
-    <div style="display:flex;flex-direction:column;gap:6px">
-      ${v.tel?`<a class="btn btn-primary btn-sm" href="tel:${v.tel.replace(/\D/g,'')}" style="--tab-color:#A0522D;text-decoration:none">📞</a>`:''}
-      <button class="btn btn-danger btn-sm" onclick="delContato('${v.id}')">🗑️</button>
-    </div>
-  </div>`).join('');
+  el.innerHTML=arr.map(function(v){
+    var id=v.id;
+    return '<div class="contact-card">'+
+      '<div class="contact-avatar" style="background:linear-gradient(135deg,#C4874A,#A0522D)">📋</div>'+
+      '<div class="contact-body">'+
+        '<div class="contact-name">'+v.nome+'</div>'+
+        (v.role?'<div class="contact-role">'+v.role+'</div>':'')+
+        (v.tel?'<a class="contact-phone" href="tel:'+v.tel.replace(/\D/g,'')+'">'+v.tel+'</a>':'')+
+        (v.obs?'<div style="font-size:.75rem;color:var(--light);margin-top:2px">'+v.obs+'</div>':'')+
+      '</div>'+
+      '<div style="display:flex;flex-direction:column;gap:6px">'+
+        (v.tel?'<a class="btn btn-primary btn-sm" href="tel:'+v.tel.replace(/\D/g,'')+'" style="--tab-color:#A0522D;text-decoration:none">📞</a>':'')+
+        '<button class="btn btn-ghost btn-sm" data-id="'+id+'" onclick="editContato(this.dataset.id)">✏️</button>'+
+        '<button class="btn btn-danger btn-sm" data-id="'+id+'" onclick="delContato(this.dataset.id)">🗑️</button>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+}
+
+// ════════════════════════════════════════════
+//  RECEITAS
+// ════════════════════════════════════════════
+var rcMedCount=0;
+function prefillReceita(who){
+  var vets={
+    elaine:{vet:'Dra. Elaine Santos',clinica:'Elaine Santos Oftalmologia Veterinária — Niterói'},
+    adriana:{vet:'Dra. Adriana Stehling',clinica:'Clínica Veterinária Adriana Stehling — Niterói'},
+    sabrina:{vet:'Dra. Sabrina Feitosa',clinica:'Odontologia Veterinária — Sabrina Feitosa'},
+  };
+  var v=vets[who];if(!v)return;
+  document.getElementById('rc-vet').value=v.vet;
+  document.getElementById('rc-clinica').value=v.clinica;
+  if(!document.getElementById('rc-data').value)document.getElementById('rc-data').value=today();
+}
+function addMedRow(){
+  rcMedCount++;
+  var n=rcMedCount;
+  var div=document.createElement('div');
+  div.id='rcm-'+n;
+  div.style.cssText='background:#f9f4ee;border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:6px';
+  div.innerHTML='<div style="display:flex;gap:6px"><input placeholder="Nome do medicamento *" style="flex:1;padding:6px 10px;border:1px solid var(--border);border-radius:8px;font-size:.84rem" id="rcm-nome-'+n+'" type="text"><button onclick="document.getElementById(\'rcm-'+n+'\').remove()" style="background:none;border:none;color:#B71C1C;cursor:pointer;font-size:1.1rem">✕</button></div>'+
+    '<input placeholder="Dose e frequência (Ex: 1 gota OD 2x/dia)" style="padding:6px 10px;border:1px solid var(--border);border-radius:8px;font-size:.84rem" id="rcm-dose-'+n+'" type="text">'+
+    '<input placeholder="Observações (opcional)" style="padding:6px 10px;border:1px solid var(--border);border-radius:8px;font-size:.84rem" id="rcm-obs-'+n+'" type="text">';
+  document.getElementById('rc-meds-list').appendChild(div);
+}
+function saveReceita(){
+  var data=document.getElementById('rc-data').value;
+  var vet=document.getElementById('rc-vet').value.trim();
+  if(!data||!vet){toast('⚠️ Preencha data e veterinária!');return;}
+  var clinica=document.getElementById('rc-clinica').value;
+  var obs=document.getElementById('rc-obs').value;
+  // Coletar medicamentos
+  var meds=[];
+  var rows=document.getElementById('rc-meds-list').children;
+  for(var i=0;i<rows.length;i++){
+    var n=rows[i].id.replace('rcm-','');
+    var nome=document.getElementById('rcm-nome-'+n);
+    var dose=document.getElementById('rcm-dose-'+n);
+    var mobs=document.getElementById('rcm-obs-'+n);
+    if(nome&&nome.value.trim())meds.push({nome:nome.value.trim(),dose:dose?dose.value:'',obs:mobs?mobs.value:''});
+  }
+  // Salvar receita
+  var recArr=load('receitas');
+  var recId=uid();
+  recArr.unshift({id:recId,data,vet,clinica,obs,meds});
+  save('receitas',recArr);
+  // Criar entradas de medicamentos
+  if(meds.length){
+    var mArr=load('meds');
+    meds.forEach(function(m){
+      mArr.unshift({id:uid(),nome:m.nome,dose:m.dose,inicio:data,fim:'',obs:(m.obs?m.obs+' · ':'')+' Receita de '+vet+' ('+fmtDate(data)+')',categoria:'receita'});
+    });
+    save('meds',mArr);
+    renderMeds();
+  }
+  renderReceitas();
+  closeModal('receita');
+  document.getElementById('rc-data').value='';
+  document.getElementById('rc-vet').value='';
+  document.getElementById('rc-clinica').value='';
+  document.getElementById('rc-obs').value='';
+  document.getElementById('rc-meds-list').innerHTML='';
+  rcMedCount=0;
+  toast('📋 Receita salva! '+meds.length+' remédio(s) adicionado(s) a Medicamentos.');
+}
+function delReceita(id){
+  if(!confirm('Remover receita? Os medicamentos criados NÃO serão removidos.'))return;
+  save('receitas',load('receitas').filter(v=>v.id!==id));renderReceitas();toast('🗑️ Receita removida');
+}
+function renderReceitas(){
+  var arr=load('receitas');var el=document.getElementById('receitas-list');
+  if(!el)return;
+  if(!arr.length){el.innerHTML='<div class="empty-state"><div class="empty-icon">📋</div><p>Nenhuma receita cadastrada. Adicione a receita e os remédios entram automaticamente!</p></div>';return;}
+  el.innerHTML=arr.map(function(v){
+    var medsHtml=v.meds&&v.meds.length?v.meds.map(function(m){return '<div style="font-size:.78rem;padding:4px 0;border-bottom:1px solid #f0e8d8">💊 <strong>'+m.nome+'</strong>'+(m.dose?' — '+m.dose:'')+'</div>';}).join(''):'';
+    return '<div class="item">'+
+      '<span class="item-icon">📋</span>'+
+      '<div class="item-body">'+
+        '<div class="item-title">'+v.vet+'</div>'+
+        '<div class="item-meta"><span>📅 '+fmtDate(v.data)+'</span>'+(v.clinica?'<span>🏢 '+v.clinica+'</span>':'')+'</div>'+
+        (v.obs?'<div style="font-size:.78rem;color:var(--light);margin-top:4px">'+v.obs+'</div>':'')+
+        (medsHtml?'<div style="margin-top:8px;background:#f9f4ee;border-radius:8px;padding:8px">'+medsHtml+'</div>':'')+
+      '</div>'+
+      '<div class="item-actions"><button class="btn btn-danger btn-sm" data-id="'+v.id+'" onclick="delReceita(this.dataset.id)">🗑️</button></div>'+
+    '</div>';
+  }).join('');
+}
+
+// ════════════════════════════════════════════
+//  EXAMES EXTRAS (dinâmicos)
+// ════════════════════════════════════════════
+var exTipoIcon={lab:'🧪',imagem:'🖥️',cardio:'🫀',oftalmo:'👁️',fezes:'🔬',outro:'📄'};
+function saveExameExtra(){
+  var data=document.getElementById('ex-data').value;
+  var nome=document.getElementById('ex-nome').value.trim();
+  if(!data||!nome){toast('⚠️ Preencha data e nome do exame!');return;}
+  var arr=load('examesExtra');
+  arr.unshift({id:uid(),data,nome,tipo:document.getElementById('ex-tipo').value,vet:document.getElementById('ex-vet').value,resultado:document.getElementById('ex-resultado').value,arquivo:document.getElementById('ex-arquivo').value});
+  save('examesExtra',arr);renderExamesExtra();closeModal('exame');toast('🔬 Exame registrado!');
+  ['ex-data','ex-nome','ex-vet','ex-resultado','ex-arquivo'].forEach(function(id){document.getElementById(id).value='';});
+}
+function delExameExtra(id){if(!confirm('Remover?'))return;save('examesExtra',load('examesExtra').filter(v=>v.id!==id));renderExamesExtra();toast('🗑️ Removido');}
+function renderExamesExtra(){
+  var arr=load('examesExtra');var el=document.getElementById('exames-extra-list');if(!el)return;
+  if(!arr.length){el.innerHTML='<div class="empty-state"><div class="empty-icon">🔬</div><p>Adicione novos exames aqui. As conclusões do painel acima são históricas e fixas — novos resultados ficam nesta lista.</p></div>';return;}
+  el.innerHTML=arr.map(function(v){
+    var icon=exTipoIcon[v.tipo]||'📄';
+    return '<div class="item"><span class="item-icon">'+icon+'</span><div class="item-body">'+
+      '<div class="item-title">'+v.nome+'</div>'+
+      '<div class="item-meta"><span>📅 '+fmtDate(v.data)+'</span>'+(v.vet?'<span>👩‍⚕️ '+v.vet+'</span>':'')+
+      (v.arquivo?'<span>📁 '+v.arquivo+'</span>':'')+'</div>'+
+      (v.resultado?'<div style="font-size:.78rem;color:var(--light);margin-top:4px">'+v.resultado+'</div>':'')+
+      '</div><div class="item-actions"><button class="btn btn-danger btn-sm" data-id="'+v.id+'" onclick="delExameExtra(this.dataset.id)">🗑️</button></div></div>';
+  }).join('');
 }
 
 // ════════════════════════════════════════════
@@ -3616,11 +3814,48 @@ function calcAge(){
     localStorage.setItem('ch_v15_init','1');
   }
 
+  // ── V16: Optivet Tears + Lacri Caps que faltaram no v15 ──
+  if(!localStorage.getItem('ch_v16_init')){
+    var mArr16=load('meds');
+    // Verificar se Optivet já existe ativo
+    var temOptivet=mArr16.some(function(m){return m.nome&&m.nome.toLowerCase().includes('optivet')&&!m.fim;});
+    if(!temOptivet){
+      mArr16.unshift({id:uid(),nome:'Optivet Tears colírio',dose:'1 gota cada olho 2x/dia (manhã/noite)',inicio:'2026-07-02',fim:'',obs:'Uso veterinário — uso contínuo. Intervalo mín. 5min entre colírios.',categoria:'oftalmologico'});
+    }
+    var temLacri=mArr16.some(function(m){return m.nome&&m.nome.toLowerCase().includes('lacri caps')&&!m.fim;});
+    if(!temLacri){
+      mArr16.unshift({id:uid(),nome:'Lacri Caps Pet',dose:'1 cápsula oral 1x/dia',inicio:'2026-07-02',fim:'',obs:'Uso veterinário — uso contínuo.',categoria:'oftalmologico'});
+    }
+    save('meds',mArr16);
+    localStorage.setItem('ch_v16_init','1');
+  }
+
+  // v17 — EAS 16/07/2026 (PCA Diagnósticos Veterinários)
+  if(!localStorage.getItem('ch_v17_init')){
+    var exArr17=load('examesExtra');
+    var easId=uid();
+    exArr17.unshift({
+      id:easId,
+      tipo:'lab',
+      nome:'EAS — Exame de Urina Tipo 1',
+      data:'2026-07-16',
+      dataColeta:'2026-07-15',
+      vet:'Dra. Vera Lucia Vaz Guimarães (CRMV 2920)',
+      local:'PCA Centro de Diagnóstico Veterinário — Niterói',
+      requisicao:'330.751',
+      resultado:'Cor: Amarelo | Aspecto: TURVO (ref: Límpido) ⚠️ | Densidade: 1035 (ref: 1.025-1.045) | pH: 6,5 (normal)\n\nQuímico: Proteína +(30) ⚠️ | Nitrito: Positivo ⚠️ | Bilirrubina/Cetônicos/Glicose/Sangue: Negativos\n\nSedimentoscopia: Leucócitos 10-15/campo ⚠️ (ref: 6/campo) | Eritrócitos: Ausentes | Bactérias: Flora Intensa ⚠️ | Cristais: Estruvita (Numerosos) ⚠️ | Células Vesicais: (+) ⚠️ | Cilindros: Ausentes',
+      conclusao:'⚠️ ATENÇÃO: Resultado alterado. Achados sugestivos de infecção urinária bacteriana (ITU): aspecto turvo, nitrito positivo, leucocitúria (10-15/campo), flora bacteriana intensa e cristais de estruvita numerosos. Proteína +(30) pode ser secundária à inflamação. Necessário contato com Dra. Vera para avaliação e possível antibioticoterapia. Coleta por cateterização.',
+      obs:'Responsável técnico: Frederico A. G. C. Weber CRMV 4679. Coleta por cateterização em 15/07/2026.'
+    });
+    save('examesExtra',exArr17);
+    localStorage.setItem('ch_v17_init','1');
+  }
+
   renderVacinas();renderVermifugos();renderConsultas();renderAnotacoes();
   renderPesos();renderRacao();renderRefeicoes();
   renderBanhos();renderMeds();renderLembretes();renderDiario();
   renderContatosExtra();renderGastos();setTimeout(()=>renderGastosCharts(),80);
-  renderEstoque();
+  renderEstoque();renderReceitas();renderExamesExtra();
   const estBtn=document.getElementById('estf-todos');if(estBtn){estBtn.className='btn btn-primary btn-sm';estBtn.style.setProperty('--tab-color','#52796F');}
   renderDash();
 
