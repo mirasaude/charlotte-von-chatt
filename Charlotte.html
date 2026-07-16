@@ -3079,7 +3079,7 @@ function renderExames(filtro){
       ${e.valores.length?`<div class="exam-vals">${e.valores.map(v=>`<div class="ev ${v.ok?'ok':'warn'}"><div class="ev-n">${v.n}</div><div class="ev-v">${v.v}</div>${v.ref?`<div class="ev-r">ref: ${v.ref}</div>`:''}</div>`).join('')}</div>`:''}
       ${e.imgs.length?`<div style="font-size:.72rem;font-weight:700;color:var(--light);text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px">Imagens (${e.imgs.length})</div><div class="exam-gallery">${e.imgs.map((img,i)=>`<img class="ethumb" src="${img}" alt="Img ${i+1}" onclick='openLB(${JSON.stringify(e.imgs)},${i})' onerror="this.style.display='none'">`).join('')}</div>`:''}
       <div class="exam-actions">
-        <a href="${e.pdf}" target="_blank" class="btn btn-primary btn-sm" style="--tab-color:${e.ec};text-decoration:none">📄 Abrir PDF</a>
+        ${e.pdf?`<a href="${e.pdf}" target="_blank" class="btn btn-primary btn-sm" style="--tab-color:${e.ec};text-decoration:none">📄 Abrir PDF</a>`:'<span style="font-size:.78rem;color:var(--light)">📎 PDF não disponível</span>'}
       </div>
     </div>
   </div>
