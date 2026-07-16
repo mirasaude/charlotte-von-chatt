@@ -1827,16 +1827,20 @@ function importarDados(input){
       if(!data._versao||!data._versao.startsWith('charlotte')){
         status.innerHTML='<span style="color:#B71C1C">❌ Arquivo inválido — não é um backup da Charlotte.</span>';return;
       }
-      if(!confirm('Substituir TODOS os dados atuais pelos dados do arquivo? Esta ação não pode ser desfeita.')){
-        status.innerHTML='<span style="color:#888">Importação cancelada.</span>';return;
-      }
-      Object.keys(KEYS).forEach(function(k){
-        if(data[k]!==undefined)localStorage.setItem(KEYS[k],JSON.stringify(data[k]));
-      });
-      if(data._foto)localStorage.setItem(KEYS.foto,data._foto);
-      // Preservar flags de init para não sobrescrever
-      status.innerHTML='<span style="color:#2E7D32">✅ Dados importados com sucesso! Recarregando…</span>';
-      setTimeout(function(){location.reload();},1200);
+      // Mostrar botão de confirmação em vez de confirm() (bloqueado no iOS Safari)
+      status.innerHTML='<div style="background:#FFF3CD;border:1px solid #FFC107;border-radius:10px;padding:12px;margin-top:8px">'
+        +'<b>⚠️ Confirmar importação?</b><br><small>Isso vai substituir todos os dados atuais pelos dados do arquivo.</small><br><br>'
+        +'<button onclick="window._doImport()" style="background:#2E7D32;color:#fff;border:none;border-radius:8px;padding:10px 20px;font-size:1rem;margin-right:8px">✅ Sim, importar</button>'
+        +'<button onclick="document.getElementById(\'import-status\').innerHTML=\'<span style=color:#888>Cancelado.</span>\'" style="background:#888;color:#fff;border:none;border-radius:8px;padding:10px 16px;font-size:1rem">Cancelar</button>'
+        +'</div>';
+      window._doImport=function(){
+        Object.keys(KEYS).forEach(function(k){
+          if(data[k]!==undefined)localStorage.setItem(KEYS[k],JSON.stringify(data[k]));
+        });
+        if(data._foto)localStorage.setItem(KEYS.foto,data._foto);
+        status.innerHTML='<span style="color:#2E7D32;font-size:1.1rem">✅ Dados importados! Recarregando…</span>';
+        setTimeout(function(){location.reload();},1500);
+      };
     }catch(err){
       status.innerHTML='<span style="color:#B71C1C">❌ Erro ao ler arquivo: '+err.message+'</span>';
     }
